@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h1>Edit Visitor</h1>
+        <h1>Edit Visitor Record</h1>
     </x-slot>
 
     <div class="container-fluid">
@@ -12,6 +12,8 @@
                             @csrf
                             @method('PATCH')
 
+                            <h6 class="mb-3">Personal Information</h6>
+
                             <div class="mb-3">
                                 <label for="full_name" class="form-label">Full Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('full_name') is-invalid @enderror" id="full_name" name="full_name" value="{{ old('full_name', $visitor->full_name) }}" required>
@@ -22,7 +24,7 @@
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label for="id_number" class="form-label">ID Number <span class="text-danger">*</span></label>
+                                    <label for="id_number" class="form-label">National ID Number <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control @error('id_number') is-invalid @enderror" id="id_number" name="id_number" value="{{ old('id_number', $visitor->id_number) }}" required>
                                     @error('id_number')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -38,10 +40,30 @@
                                 </div>
                             </div>
 
+                            <h6 class="mb-3 mt-4">Visit Details</h6>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="vehicle_registration" class="form-label">Vehicle Registration (Optional)</label>
+                                    <input type="text" class="form-control @error('vehicle_registration') is-invalid @enderror" id="vehicle_registration" name="vehicle_registration" value="{{ old('vehicle_registration', $visitor->vehicle_registration) }}">
+                                    @error('vehicle_registration')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="number_of_visitors" class="form-label">Number of Visitors <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control @error('number_of_visitors') is-invalid @enderror" id="number_of_visitors" name="number_of_visitors" value="{{ old('number_of_visitors', $visitor->number_of_visitors) }}" min="1" required>
+                                    @error('number_of_visitors')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
                             <div class="mb-3">
-                                <label for="organization" class="form-label">Organization</label>
-                                <input type="text" class="form-control @error('organization') is-invalid @enderror" id="organization" name="organization" value="{{ old('organization', $visitor->organization) }}">
-                                @error('organization')
+                                <label for="reason_for_visit" class="form-label">Reason for Visit</label>
+                                <input type="text" class="form-control @error('reason_for_visit') is-invalid @enderror" id="reason_for_visit" name="reason_for_visit" value="{{ old('reason_for_visit', $visitor->reason_for_visit) }}">
+                                @error('reason_for_visit')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -56,9 +78,9 @@
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="department" class="form-label">Department <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control @error('department') is-invalid @enderror" id="department" name="department" value="{{ old('department', $visitor->department) }}" required>
-                                    @error('department')
+                                    <label for="whom_to_see" class="form-label">Whom to See</label>
+                                    <input type="text" class="form-control @error('whom_to_see') is-invalid @enderror" id="whom_to_see" name="whom_to_see" value="{{ old('whom_to_see', $visitor->whom_to_see) }}">
+                                    @error('whom_to_see')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -66,11 +88,13 @@
 
                             <div class="mb-3">
                                 <label for="purpose" class="form-label">Purpose of Visit <span class="text-danger">*</span></label>
-                                <textarea class="form-control @error('purpose') is-invalid @enderror" id="purpose" name="purpose" rows="4" required>{{ old('purpose', $visitor->purpose) }}</textarea>
+                                <textarea class="form-control @error('purpose') is-invalid @enderror" id="purpose" name="purpose" rows="3" required>{{ old('purpose', $visitor->purpose) }}</textarea>
                                 @error('purpose')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+
+                            <h6 class="mb-3 mt-4">Status</h6>
 
                             <div class="mb-3">
                                 <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
@@ -79,6 +103,16 @@
                                     <option value="OUT" {{ old('status', $visitor->status) == 'OUT' ? 'selected' : '' }}>Outside</option>
                                 </select>
                                 @error('status')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <h6 class="mb-3 mt-4">Authorization</h6>
+
+                            <div class="mb-3">
+                                <label for="signature" class="form-label">Signature</label>
+                                <input type="text" class="form-control @error('signature') is-invalid @enderror" id="signature" name="signature" value="{{ old('signature', $visitor->signature) }}">
+                                @error('signature')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

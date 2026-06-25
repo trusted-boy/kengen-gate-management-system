@@ -4,18 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Visitor extends Model
+class InternsAttachee extends Model
 {
+    protected $table = 'interns_attachees';
+
     protected $fillable = [
         'full_name',
         'id_number',
         'phone',
-        'vehicle_registration',
-        'number_of_visitors',
-        'reason_for_visit',
-        'host_name',
-        'whom_to_see',
+        'institution',
         'purpose',
+        'department',
         'check_in_time',
         'check_out_time',
         'status',

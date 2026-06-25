@@ -16,6 +16,15 @@
             </div>
 
             <div class="col-md-6 col-lg-3 mb-3">
+                <div class="card stat-card interns">
+                    <div class="card-body">
+                        <div class="stat-card-title">Interns Present</div>
+                        <div class="stat-card-value">{{ $internsPresent }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 mb-3">
                 <div class="card stat-card vehicles">
                     <div class="card-body">
                         <div class="stat-card-title">Active Vehicles</div>
@@ -32,15 +41,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-6 col-lg-3 mb-3">
-                <div class="card stat-card equipment">
-                    <div class="card-body">
-                        <div class="stat-card-title">Equipment Out</div>
-                        <div class="stat-card-value">{{ $equipmentOut }}</div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- Summary Cards -->
@@ -53,7 +53,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <p class="text-muted">Visitors Outside</p>
+                                <p class="text-muted">Visitors Checked Out</p>
                                 <h4>{{ $visitorsOutside }}</h4>
                             </div>
                             <div class="col-md-6">
@@ -66,6 +66,55 @@
                             <p class="text-muted">Total Visitors</p>
                             <h4>{{ $totalVisitors }}</h4>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0">Interns & Attachees Statistics</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-muted">Today's Check-ins</p>
+                                <h4>{{ $todayInterns }}</h4>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="text-muted">Total Interns</p>
+                                <h4>{{ $totalInterns }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Last Check-ins -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0">Last Visitor Activities</h6>
+                    </div>
+                    <div class="card-body">
+                        @if($lastVisitorCheckIn)
+                            <div class="mb-3">
+                                <p class="text-muted mb-1">Last Check-In</p>
+                                <p><strong>{{ $lastVisitorCheckIn->full_name }}</strong></p>
+                                <small class="text-muted">{{ $lastVisitorCheckIn->check_in_time->diffForHumans() }}</small>
+                            </div>
+                        @endif
+
+                        @if($lastVisitorCheckOut)
+                            <hr>
+                            <div>
+                                <p class="text-muted mb-1">Last Check-Out</p>
+                                <p><strong>{{ $lastVisitorCheckOut->full_name }}</strong></p>
+                                <small class="text-muted">{{ $lastVisitorCheckOut->check_out_time->diffForHumans() }}</small>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -117,6 +166,11 @@
                                 </a>
                             </div>
                             <div class="col-md-3">
+                                <a href="{{ route('interns_attachees.index') }}" class="btn btn-outline-info w-100">
+                                    <i class="bi bi-people"></i> Interns
+                                </a>
+                            </div>
+                            <div class="col-md-3">
                                 <a href="{{ route('vehicles.index') }}" class="btn btn-outline-primary w-100">
                                     <i class="bi bi-car-front"></i> Vehicles
                                 </a>
@@ -126,11 +180,6 @@
                                     <i class="bi bi-building"></i> Contractors
                                 </a>
                             </div>
-                            <div class="col-md-3">
-                                <a href="{{ route('equipment_movements.index') }}" class="btn btn-outline-primary w-100">
-                                    <i class="bi bi-boxes"></i> Equipment
-                                </a>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -138,20 +187,3 @@
         </div>
     </div>
 </x-app-layout>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card shadow">
-                <div class="card-body text-center">
-                    <h5>Total Visitors</h5>
-                    <h2>{{ $totalVisitors }}</h2>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-</div>
-
-</body>
-</html>

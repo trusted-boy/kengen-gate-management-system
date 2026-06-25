@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Visitor;
+use App\Models\InternsAttachee;
 use App\Models\Vehicle;
 use App\Models\Contractor;
 use App\Models\EquipmentMovement;
@@ -20,6 +21,13 @@ class DashboardController extends Controller
         $todayVisitors = Visitor::whereDate('created_at', now()->toDateString())->count();
         $totalVisitors = Visitor::count();
 
+        $internsPresent = InternsAttachee::where('status', 'IN')->count();
+        $todayInterns = InternsAttachee::whereDate('created_at', now()->toDateString())->count();
+        $totalInterns = InternsAttachee::count();
+
+        $lastVisitorCheckIn = Visitor::where('status', 'IN')->latest()->first();
+        $lastVisitorCheckOut = Visitor::where('status', 'OUT')->latest()->first();
+
         $activeVehicles = Vehicle::where('status', 'Active')->count();
         $totalVehicles = Vehicle::count();
 
@@ -36,6 +44,11 @@ class DashboardController extends Controller
             'visitorsOutside',
             'todayVisitors',
             'totalVisitors',
+            'internsPresent',
+            'todayInterns',
+            'totalInterns',
+            'lastVisitorCheckIn',
+            'lastVisitorCheckOut',
             'activeVehicles',
             'totalVehicles',
             'activeContractors',
@@ -53,6 +66,9 @@ class DashboardController extends Controller
             'visitorsOutside' => Visitor::where('status', 'OUT')->count(),
             'todayVisitors' => Visitor::whereDate('created_at', now()->toDateString())->count(),
             'totalVisitors' => Visitor::count(),
+            'internsPresent' => InternsAttachee::where('status', 'IN')->count(),
+            'todayInterns' => InternsAttachee::whereDate('created_at', now()->toDateString())->count(),
+            'totalInterns' => InternsAttachee::count(),
             'activeVehicles' => Vehicle::where('status', 'Active')->count(),
             'totalVehicles' => Vehicle::count(),
             'activeContractors' => Contractor::where('status', 'Active')->count(),
@@ -61,6 +77,7 @@ class DashboardController extends Controller
             'totalMovements' => EquipmentMovement::count(),
             'totalDepartments' => Department::count(),
             'visitors' => Visitor::latest()->limit(10)->get(),
+            'interns' => InternsAttachee::latest()->limit(10)->get(),
             'vehicles' => Vehicle::latest()->limit(10)->get(),
             'contractors' => Contractor::latest()->limit(10)->get(),
             'equipments' => EquipmentMovement::latest()->limit(10)->get(),

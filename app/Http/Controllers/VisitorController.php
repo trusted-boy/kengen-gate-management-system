@@ -15,6 +15,7 @@ class VisitorController extends Controller
         $visitors = Visitor::when($search, function ($query) use ($search) {
             return $query->where('full_name', 'like', "%{$search}%")
                         ->orWhere('id_number', 'like', "%{$search}%")
+                        ->orWhere('vehicle_registration', 'like', "%{$search}%")
                         ->orWhere('host_name', 'like', "%{$search}%");
         })->latest()->paginate($perPage);
 
@@ -29,13 +30,16 @@ class VisitorController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'full_name' => 'required',
+            'full_name' => 'required|string|max:255',
             'id_number' => 'required|unique:visitors',
-            'phone' => 'nullable',
-            'organization' => 'nullable',
-            'host_name' => 'required',
-            'department' => 'required',
-            'purpose' => 'required',
+            'phone' => 'nullable|string|max:20',
+            'vehicle_registration' => 'nullable|string|max:50',
+            'number_of_visitors' => 'required|integer|min:1',
+            'reason_for_visit' => 'nullable|string|max:255',
+            'host_name' => 'required|string|max:255',
+            'whom_to_see' => 'nullable|string|max:255',
+            'purpose' => 'required|string',
+            'signature' => 'required|string|max:255',
         ]);
 
         $validated['check_in_time'] = now();
@@ -59,14 +63,17 @@ class VisitorController extends Controller
     public function update(Request $request, Visitor $visitor)
     {
         $validated = $request->validate([
-            'full_name' => 'required',
+            'full_name' => 'required|string|max:255',
             'id_number' => 'required|unique:visitors,id_number,' . $visitor->id,
-            'phone' => 'nullable',
-            'organization' => 'nullable',
-            'host_name' => 'required',
-            'department' => 'required',
-            'purpose' => 'required',
+            'phone' => 'nullable|string|max:20',
+            'vehicle_registration' => 'nullable|string|max:50',
+            'number_of_visitors' => 'required|integer|min:1',
+            'reason_for_visit' => 'nullable|string|max:255',
+            'host_name' => 'required|string|max:255',
+            'whom_to_see' => 'nullable|string|max:255',
+            'purpose' => 'required|string',
             'status' => 'required|in:IN,OUT',
+            'signature' => 'nullable|string|max:255',
         ]);
 
         if ($request->filled('status') && $request->status === 'OUT' && $visitor->status === 'IN') {
@@ -78,10 +85,20 @@ class VisitorController extends Controller
         return redirect()->route('visitors.index')->with('success', 'Visitor updated successfully.');
     }
 
+    public function checkout(Visitor $visitor)
+    {
+        $visitor->update([
+            'status' => 'OUT',
+            'check_out_time' => now(),
+        ]);
+
+        return redirect()->route('visitors.index')->with('success', 'Visitor checked out successfully.');
+    }
+
     public function destroy(Visitor $visitor)
     {
         $visitor->delete();
 
-        return redirect()->route('visitors.index')->with('success', 'Visitor deleted successfully.');
+        return redirect()->route('visitors.index')->with('success', 'Visitor record deleted successfully.');
     }
 }

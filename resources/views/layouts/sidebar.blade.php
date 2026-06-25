@@ -28,6 +28,13 @@
         </li>
 
         <li class="sidebar-nav-item">
+            <a href="{{ route('interns_attachees.index') }}" class="sidebar-nav-link {{ request()->routeIs('interns_attachees*') ? 'active' : '' }}">
+                <i class="bi bi-people"></i>
+                Interns & Attachees
+            </a>
+        </li>
+
+        <li class="sidebar-nav-item">
             <a href="{{ route('vehicles.index') }}" class="sidebar-nav-link {{ request()->routeIs('vehicles*') ? 'active' : '' }}">
                 <i class="bi bi-car-front"></i>
                 Vehicles

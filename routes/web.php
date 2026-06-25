@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VisitorController;
+use App\Http\Controllers\InternsAttacheeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\ContractorController;
@@ -21,6 +22,11 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 Route::middleware(['auth'])->group(function () {
     // Resources accessible to all authenticated users
     Route::resource('visitors', VisitorController::class);
+    Route::post('visitors/{visitor}/checkout', [VisitorController::class, 'checkout'])->name('visitors.checkout');
+
+    Route::resource('interns_attachees', InternsAttacheeController::class);
+    Route::post('interns_attachees/{interns_attachee}/checkout', [InternsAttacheeController::class, 'checkout'])->name('interns_attachees.checkout');
+
     Route::resource('departments', DepartmentController::class);
     Route::resource('vehicles', VehicleController::class);
     Route::resource('contractors', ContractorController::class);

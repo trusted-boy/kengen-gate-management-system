@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h1>Check In Visitor</h1>
+        <h1>Check In Intern/Attachee</h1>
     </x-slot>
 
     <div class="container-fluid">
@@ -8,7 +8,7 @@
             <div class="col-md-8 offset-md-2">
                 <div class="card">
                     <div class="card-body">
-                        <form method="POST" action="{{ route('visitors.store') }}">
+                        <form method="POST" action="{{ route('interns_attachees.store') }}">
                             @csrf
 
                             <h6 class="mb-3">Personal Information</h6>
@@ -39,58 +39,32 @@
                                 </div>
                             </div>
 
-                            <h6 class="mb-3 mt-4">Visit Details</h6>
-
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="vehicle_registration" class="form-label">Vehicle Registration (Optional)</label>
-                                    <input type="text" class="form-control @error('vehicle_registration') is-invalid @enderror" id="vehicle_registration" name="vehicle_registration" value="{{ old('vehicle_registration') }}">
-                                    @error('vehicle_registration')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label for="number_of_visitors" class="form-label">Number of Visitors <span class="text-danger">*</span></label>
-                                    <input type="number" class="form-control @error('number_of_visitors') is-invalid @enderror" id="number_of_visitors" name="number_of_visitors" value="{{ old('number_of_visitors', 1) }}" min="1" required>
-                                    @error('number_of_visitors')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
+                            <h6 class="mb-3 mt-4">Placement Details</h6>
 
                             <div class="mb-3">
-                                <label for="reason_for_visit" class="form-label">Reason for Visit</label>
-                                <input type="text" class="form-control @error('reason_for_visit') is-invalid @enderror" id="reason_for_visit" name="reason_for_visit" value="{{ old('reason_for_visit') }}" placeholder="E.g., Business Meeting, Delivery, Interview">
-                                @error('reason_for_visit')
+                                <label for="institution" class="form-label">Institution / Organization <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control @error('institution') is-invalid @enderror" id="institution" name="institution" value="{{ old('institution') }}" placeholder="School/University/Company" required>
+                                @error('institution')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label for="host_name" class="form-label">Host Name <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control @error('host_name') is-invalid @enderror" id="host_name" name="host_name" value="{{ old('host_name') }}" required>
-                                    @error('host_name')
+                                    <label for="department" class="form-label">Department Attached To <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control @error('department') is-invalid @enderror" id="department" name="department" value="{{ old('department') }}" required>
+                                    @error('department')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label for="whom_to_see" class="form-label">Whom to See</label>
-                                    <input type="text" class="form-control @error('whom_to_see') is-invalid @enderror" id="whom_to_see" name="whom_to_see" value="{{ old('whom_to_see') }}">
-                                    @error('whom_to_see')
+                                    <label for="purpose" class="form-label">Purpose <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control @error('purpose') is-invalid @enderror" id="purpose" name="purpose" value="{{ old('purpose') }}" placeholder="Internship/Attachment/Research" required>
+                                    @error('purpose')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="purpose" class="form-label">Purpose of Visit <span class="text-danger">*</span></label>
-                                <textarea class="form-control @error('purpose') is-invalid @enderror" id="purpose" name="purpose" rows="3" placeholder="Describe the purpose of this visit..." required>{{ old('purpose') }}</textarea>
-                                @error('purpose')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
                             </div>
 
                             <h6 class="mb-3 mt-4">Authorization</h6>
@@ -106,9 +80,9 @@
 
                             <div class="d-flex gap-2">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-check-circle"></i> Check In Visitor
+                                    <i class="bi bi-check-circle"></i> Check In
                                 </button>
-                                <a href="{{ route('visitors.index') }}" class="btn btn-secondary">
+                                <a href="{{ route('interns_attachees.index') }}" class="btn btn-secondary">
                                     <i class="bi bi-x-circle"></i> Cancel
                                 </a>
                             </div>

@@ -86,22 +86,18 @@
     <h1>KenGen Gate Management System</h1>
     <p class="subtitle">Comprehensive Report | Generated on {{ now()->format('M d, Y H:i') }}</p>
 
-    <div class="stats-grid">
+    <div class="stats-grid" style="grid-template-columns: 1fr 1fr 1fr;">
         <div class="stat-box">
             <div class="stat-label">Visitors Inside</div>
             <div class="stat-value">{{ $visitorsInside }}</div>
         </div>
         <div class="stat-box">
+            <div class="stat-label">Interns Present</div>
+            <div class="stat-value">{{ $internsPresent }}</div>
+        </div>
+        <div class="stat-box">
             <div class="stat-label">Active Vehicles</div>
             <div class="stat-value">{{ $activeVehicles }}</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-label">Active Contractors</div>
-            <div class="stat-value">{{ $activeContractors }}</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-label">Equipment Out</div>
-            <div class="stat-value">{{ $equipmentOut }}</div>
         </div>
     </div>
 
@@ -136,8 +132,12 @@
             <td style="text-align: right;">{{ $totalMovements }}</td>
         </tr>
         <tr>
-            <td>Total Departments</td>
-            <td style="text-align: right;">{{ $totalDepartments }}</td>
+            <td>Total Interns</td>
+            <td style="text-align: right;">{{ $totalInterns }}</td>
+        </tr>
+        <tr>
+            <td>Today's Intern Check-ins</td>
+            <td style="text-align: right;">{{ $todayInterns }}</td>
         </tr>
     </table>
 
@@ -148,18 +148,42 @@
                 <th>Name</th>
                 <th>ID Number</th>
                 <th>Host</th>
-                <th>Department</th>
+                <th>Vehicle</th>
                 <th>Status</th>
-                <th>Check In Time</th>
+                <th>Check In</th>
             </tr>
             @foreach($visitors as $visitor)
                 <tr>
                     <td>{{ $visitor->full_name }}</td>
                     <td>{{ $visitor->id_number }}</td>
                     <td>{{ $visitor->host_name }}</td>
-                    <td>{{ $visitor->department }}</td>
+                    <td>{{ $visitor->vehicle_registration ?: '-' }}</td>
                     <td>{{ $visitor->status }}</td>
                     <td>{{ $visitor->check_in_time->format('M d, H:i') }}</td>
+                </tr>
+            @endforeach
+        </table>
+    @endif
+
+    @if($interns->count() > 0)
+        <div class="section-title">Recent Interns & Attachees</div>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>ID Number</th>
+                <th>Institution</th>
+                <th>Department</th>
+                <th>Status</th>
+                <th>Check In</th>
+            </tr>
+            @foreach($interns as $intern)
+                <tr>
+                    <td>{{ $intern->full_name }}</td>
+                    <td>{{ $intern->id_number }}</td>
+                    <td>{{ $intern->institution }}</td>
+                    <td>{{ $intern->department }}</td>
+                    <td>{{ $intern->status }}</td>
+                    <td>{{ $intern->check_in_time->format('M d, H:i') }}</td>
                 </tr>
             @endforeach
         </table>
