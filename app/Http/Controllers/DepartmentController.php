@@ -12,7 +12,15 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        //
+        $search = request('search', '');
+        $perPage = request('per_page', 10);
+
+        $departments = Department::when($search, function ($query) use ($search) {
+            return $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('code', 'like', "%{$search}%");
+        })->paginate($perPage);
+
+        return view('departments.index', compact('departments', 'search', 'perPage'));
     }
 
     /**
@@ -20,7 +28,7 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        //
+        return view('departments.create');
     }
 
     /**
@@ -28,7 +36,15 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|unique:departments',
+            'code' => 'required|unique:departments',
+            'description' => 'nullable',
+        ]);
+
+        Department::create($validated);
+
+        return redirect()->route('departments.index')->with('success', 'Department added successfully.');
     }
 
     /**
@@ -36,7 +52,7 @@ class DepartmentController extends Controller
      */
     public function show(Department $department)
     {
-        //
+        return view('departments.show', compact('department'));
     }
 
     /**
@@ -44,7 +60,7 @@ class DepartmentController extends Controller
      */
     public function edit(Department $department)
     {
-        //
+        return view('departments.edit', compact('department'));
     }
 
     /**
@@ -52,7 +68,15 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, Department $department)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|unique:departments,name,' . $department->id,
+            'code' => 'required|unique:departments,code,' . $department->id,
+            'description' => 'nullable',
+        ]);
+
+        $department->update($validated);
+
+        return redirect()->route('departments.index')->with('success', 'Department updated successfully.');
     }
 
     /**
@@ -60,6 +84,8 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department)
     {
-        //
+        $department->delete();
+
+        return redirect()->route('departments.index')->with('success', 'Department deleted successfully.');
     }
 }

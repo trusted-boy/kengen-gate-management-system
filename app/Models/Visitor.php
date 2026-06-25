@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Visitor extends Model
 {
-    // Mass assignable attributes
     protected $fillable = [
         'full_name',
         'id_number',
@@ -20,4 +19,8 @@ class Visitor extends Model
         'status',
     ];
 
+    protected $casts = [
+        'check_in_time' => 'datetime',
+        'check_out_time' => 'datetime',
+    ];
 }

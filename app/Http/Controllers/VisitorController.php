@@ -8,10 +8,18 @@ use Illuminate\Http\Request;
 class VisitorController extends Controller
 {
     public function index()
-{
-    $visitors = Visitor::latest()->get();
-    return view('visitors.index', compact('visitors'));
-}
+    {
+        $search = request('search', '');
+        $perPage = request('per_page', 10);
+
+        $visitors = Visitor::when($search, function ($query) use ($search) {
+            return $query->where('full_name', 'like', "%{$search}%")
+                        ->orWhere('id_number', 'like', "%{$search}%")
+                        ->orWhere('host_name', 'like', "%{$search}%");
+        })->latest()->paginate($perPage);
+
+        return view('visitors.index', compact('visitors', 'search', 'perPage'));
+    }
 
     public function create()
     {
@@ -20,18 +28,60 @@ class VisitorController extends Controller
 
     public function store(Request $request)
     {
-        Visitor::create([
-            'full_name' => $request->full_name,
-            'id_number' => $request->id_number,
-            'phone' => $request->phone,
-            'organization' => $request->organization,
-            'host_name' => $request->host_name,
-            'department' => $request->department,
-            'purpose' => $request->purpose,
-            'check_in_time' => now(),
-            'status' => 'IN'
+        $validated = $request->validate([
+            'full_name' => 'required',
+            'id_number' => 'required|unique:visitors',
+            'phone' => 'nullable',
+            'organization' => 'nullable',
+            'host_name' => 'required',
+            'department' => 'required',
+            'purpose' => 'required',
         ]);
 
-        return redirect('/visitors');
+        $validated['check_in_time'] = now();
+        $validated['status'] = 'IN';
+
+        Visitor::create($validated);
+
+        return redirect()->route('visitors.index')->with('success', 'Visitor checked in successfully.');
+    }
+
+    public function show(Visitor $visitor)
+    {
+        return view('visitors.show', compact('visitor'));
+    }
+
+    public function edit(Visitor $visitor)
+    {
+        return view('visitors.edit', compact('visitor'));
+    }
+
+    public function update(Request $request, Visitor $visitor)
+    {
+        $validated = $request->validate([
+            'full_name' => 'required',
+            'id_number' => 'required|unique:visitors,id_number,' . $visitor->id,
+            'phone' => 'nullable',
+            'organization' => 'nullable',
+            'host_name' => 'required',
+            'department' => 'required',
+            'purpose' => 'required',
+            'status' => 'required|in:IN,OUT',
+        ]);
+
+        if ($request->filled('status') && $request->status === 'OUT' && $visitor->status === 'IN') {
+            $validated['check_out_time'] = now();
+        }
+
+        $visitor->update($validated);
+
+        return redirect()->route('visitors.index')->with('success', 'Visitor updated successfully.');
+    }
+
+    public function destroy(Visitor $visitor)
+    {
+        $visitor->delete();
+
+        return redirect()->route('visitors.index')->with('success', 'Visitor deleted successfully.');
     }
 }
