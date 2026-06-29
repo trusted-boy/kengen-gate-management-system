@@ -20,6 +20,7 @@ class Visitor extends Model
         'check_out_time',
         'status',
         'signature',
+        'department', // ADDED
     ];
 
     protected $casts = [

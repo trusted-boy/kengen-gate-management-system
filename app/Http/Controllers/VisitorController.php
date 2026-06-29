@@ -38,6 +38,7 @@ class VisitorController extends Controller
             'reason_for_visit' => 'nullable|string|max:255',
             'host_name' => 'required|string|max:255',
             'whom_to_see' => 'nullable|string|max:255',
+            'department' => 'required|string|max:255', // ADDED: Department validation
             'purpose' => 'required|string',
             'signature' => 'required|string|max:255',
         ]);
@@ -71,6 +72,7 @@ class VisitorController extends Controller
             'reason_for_visit' => 'nullable|string|max:255',
             'host_name' => 'required|string|max:255',
             'whom_to_see' => 'nullable|string|max:255',
+            'department' => 'required|string|max:255', // ADDED: Department validation
             'purpose' => 'required|string',
             'status' => 'required|in:IN,OUT',
             'signature' => 'nullable|string|max:255',
