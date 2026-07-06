@@ -1,9 +1,8 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h1>Dashboard Analytics</h1>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="container-fluid">
+@section('content')
+<div class="container-fluid">
+
         <!-- Key Metrics Cards -->
         <div class="row mb-4">
             <div class="col-md-6 col-lg-3 mb-3">
@@ -186,4 +185,5 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection
+

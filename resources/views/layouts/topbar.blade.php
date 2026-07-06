@@ -1,6 +1,6 @@
 <nav class="topbar">
     <div>
-        <button class="btn btn-link sidebar-toggle d-md-none" style="color: #667eea;">
+        <button class="btn btn-link sidebar-toggle d-md-none" style="color: #667eea;" aria-label="Toggle sidebar">
             <i class="bi bi-list fs-5"></i>
         </button>
     </div>
