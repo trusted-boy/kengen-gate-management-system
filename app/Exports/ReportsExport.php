@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Models\Visitor;
 use App\Models\InternsAttachee;
+use App\Models\Staff;
 use App\Models\Vehicle;
 use App\Models\Contractor;
 use App\Models\EquipmentMovement;

@@ -96,8 +96,12 @@
             <div class="stat-value">{{ $internsPresent }}</div>
         </div>
         <div class="stat-box">
+            <div class="stat-label">Staff Present</div>
+            <div class="stat-value">{{ $staffPresent ?? 0 }}</div>
+        </div>
+        <div class="stat-box">
             <div class="stat-label">Active Vehicles</div>
-            <div class="stat-value">{{ $activeVehicles }}</div>
+            <div class="stat-value">{{ $vehiclesInside }}</div>
         </div>
     </div>
 
@@ -184,6 +188,30 @@
                     <td>{{ $intern->department }}</td>
                     <td>{{ $intern->status }}</td>
                     <td>{{ $intern->check_in_time->format('M d, H:i') }}</td>
+                </tr>
+            @endforeach
+        </table>
+    @endif
+
+    @if($staff->count() > 0)
+        <div class="section-title">Recent Staff</div>
+        <table>
+            <tr>
+                <th>Staff ID</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Phone</th>
+                <th>Status</th>
+                <th>Check In</th>
+            </tr>
+            @foreach($staff as $member)
+                <tr>
+                    <td>{{ $member->staff_id }}</td>
+                    <td>{{ $member->full_name }}</td>
+                    <td>{{ $member->department }}</td>
+                    <td>{{ $member->phone ?: '-' }}</td>
+                    <td>{{ $member->status }}</td>
+                    <td>{{ $member->check_in_time->format('M d, H:i') }}</td>
                 </tr>
             @endforeach
         </table>
