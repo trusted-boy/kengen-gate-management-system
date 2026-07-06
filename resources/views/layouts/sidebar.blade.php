@@ -35,6 +35,13 @@
         </li>
 
         <li class="sidebar-nav-item">
+            <a href="{{ route('staff.index') }}" class="sidebar-nav-link {{ request()->routeIs('staff*') ? 'active' : '' }}">
+                <i class="bi bi-person-badge"></i>
+                Staff
+            </a>
+        </li>
+
+        <li class="sidebar-nav-item">
             <a href="{{ route('vehicles.index') }}" class="sidebar-nav-link {{ request()->routeIs('vehicles*') ? 'active' : '' }}">
                 <i class="bi bi-car-front"></i>
                 Vehicles

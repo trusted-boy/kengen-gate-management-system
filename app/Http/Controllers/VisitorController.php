@@ -31,14 +31,14 @@ class VisitorController extends Controller
     {
         $validated = $request->validate([
             'full_name' => 'required|string|max:255',
-            'id_number' => 'required|unique:visitors',
+            'id_number' => 'required|string|max:50',
             'phone' => 'nullable|string|max:20',
             'vehicle_registration' => 'nullable|string|max:50',
             'number_of_visitors' => 'required|integer|min:1',
             'reason_for_visit' => 'nullable|string|max:255',
             'host_name' => 'required|string|max:255',
             'whom_to_see' => 'nullable|string|max:255',
-            'department' => 'required|string|max:255', // ADDED: Department validation
+            'department' => 'required|string|max:255',
             'purpose' => 'required|string',
             'signature' => 'required|string|max:255',
         ]);
@@ -102,5 +102,32 @@ class VisitorController extends Controller
         $visitor->delete();
 
         return redirect()->route('visitors.index')->with('success', 'Visitor record deleted successfully.');
+    }
+
+    /**
+     * API endpoint to retrieve visitor details by ID for auto-fill
+     */
+    public function getVisitorDetails(Request $request)
+    {
+        $idNumber = $request->query('id_number');
+        
+        if (!$idNumber) {
+            return response()->json(['error' => 'ID number required'], 400);
+        }
+
+        $visitor = Visitor::where('id_number', $idNumber)
+                         ->latest()
+                         ->first();
+
+        if (!$visitor) {
+            return response()->json(['error' => 'Visitor not found'], 404);
+        }
+
+        return response()->json([
+            'full_name' => $visitor->full_name,
+            'phone' => $visitor->phone,
+            'vehicle_registration' => $visitor->vehicle_registration,
+            'department' => $visitor->department,
+        ]);
     }
 }

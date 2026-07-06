@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\InternsAttacheeController;
+use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\ContractorController;
@@ -23,13 +24,26 @@ Route::middleware(['auth'])->group(function () {
     // Resources accessible to all authenticated users
     Route::resource('visitors', VisitorController::class);
     Route::post('visitors/{visitor}/checkout', [VisitorController::class, 'checkout'])->name('visitors.checkout');
+    Route::get('api/visitor-details', [VisitorController::class, 'getVisitorDetails'])->name('api.visitor-details');
 
     Route::resource('interns_attachees', InternsAttacheeController::class);
     Route::post('interns_attachees/{interns_attachee}/checkout', [InternsAttacheeController::class, 'checkout'])->name('interns_attachees.checkout');
+    Route::get('api/interns-details', [InternsAttacheeController::class, 'getInternsDetails'])->name('api.interns-details');
+
+    Route::resource('staff', StaffController::class);
+    Route::post('staff/{staff}/checkout', [StaffController::class, 'checkout'])->name('staff.checkout');
+    Route::get('api/staff-details', [StaffController::class, 'getStaffDetails'])->name('api.staff-details');
 
     Route::resource('departments', DepartmentController::class);
+    
     Route::resource('vehicles', VehicleController::class);
+    Route::post('vehicles/{vehicle}/checkout', [VehicleController::class, 'checkout'])->name('vehicles.checkout');
+    Route::get('api/vehicle-details', [VehicleController::class, 'getVehicleDetails'])->name('api.vehicle-details');
+    
     Route::resource('contractors', ContractorController::class);
+    Route::post('contractors/{contractor}/checkout', [ContractorController::class, 'checkout'])->name('contractors.checkout');
+    Route::get('api/contractor-details', [ContractorController::class, 'getContractorDetails'])->name('api.contractor-details');
+    
     Route::resource('equipment_movements', EquipmentMovementController::class);
 
     // Admin and Supervisor only
@@ -45,3 +59,4 @@ Route::middleware(['auth'])->group(function () {
 });
 
 require __DIR__.'/auth.php';
+

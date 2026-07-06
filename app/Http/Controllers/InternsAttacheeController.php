@@ -31,7 +31,7 @@ class InternsAttacheeController extends Controller
     {
         $validated = $request->validate([
             'full_name' => 'required|string|max:255',
-            'id_number' => 'required|unique:interns_attachees',
+            'id_number' => 'required|string|max:50',
             'phone' => 'nullable|string|max:20',
             'institution' => 'required|string|max:255',
             'purpose' => 'required|string',
@@ -94,5 +94,32 @@ class InternsAttacheeController extends Controller
         $internsAttachee->delete();
 
         return redirect()->route('interns_attachees.index')->with('success', 'Intern/Attachee record deleted successfully.');
+    }
+
+    /**
+     * API endpoint to retrieve intern/attachee details by ID for auto-fill
+     */
+    public function getInternsDetails(Request $request)
+    {
+        $idNumber = $request->query('id_number');
+        
+        if (!$idNumber) {
+            return response()->json(['error' => 'ID number required'], 400);
+        }
+
+        $intern = InternsAttachee::where('id_number', $idNumber)
+                                ->latest()
+                                ->first();
+
+        if (!$intern) {
+            return response()->json(['error' => 'Intern/Attachee not found'], 404);
+        }
+
+        return response()->json([
+            'full_name' => $intern->full_name,
+            'phone' => $intern->phone,
+            'institution' => $intern->institution,
+            'department' => $intern->department,
+        ]);
     }
 }

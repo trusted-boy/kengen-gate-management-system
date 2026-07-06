@@ -4,21 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class InternsAttachee extends Model
+class Staff extends Model
 {
-    protected $table = 'interns_attachees';
+    protected $table = 'staff';
 
     protected $fillable = [
+        'staff_id',
         'full_name',
-        'id_number',
-        'phone',
-        'institution',
-        'purpose',
         'department',
+        'vehicle_registration',
+        'phone',
         'check_in_time',
         'check_out_time',
         'status',
-        'signature',
     ];
 
     protected $casts = [

@@ -1,9 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="d-flex justify-content-between align-items-center">
-            <h1>Vehicle Register</h1>
+            <h1>Vehicle Gate Register</h1>
             <a href="{{ route('vehicles.create') }}" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> Add Vehicle
+                <i class="bi bi-plus-circle"></i> Check In Vehicle
             </a>
         </div>
     </x-slot>
@@ -43,8 +43,11 @@
                                     <th>Type</th>
                                     <th>Make/Model</th>
                                     <th>Owner</th>
-                                    <th>Status</th>
-                                    <th style="width: 150px;">Actions</th>
+                                    <th>Time In</th>
+                                    <th>Time Out</th>
+                                    <th>Duration</th>
+                                    <th>Visit Status</th>
+                                    <th style="width: 180px;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -55,20 +58,27 @@
                                         <td>{{ $vehicle->vehicle_type }}</td>
                                         <td>{{ $vehicle->make_model }} ({{ $vehicle->year }})</td>
                                         <td>{{ $vehicle->owner_name }}</td>
+                                        <td>{{ $vehicle->check_in_time ? $vehicle->check_in_time->format('Y-m-d H:i') : 'N/A' }}</td>
+                                        <td>{{ $vehicle->check_out_time ? $vehicle->check_out_time->format('Y-m-d H:i') : 'N/A' }}</td>
+                                        <td>{{ $vehicle->formatted_duration ?? '-' }}</td>
                                         <td>
-                                            @if($vehicle->status === 'Active')
-                                                <span class="badge badge-status badge-active">{{ $vehicle->status }}</span>
-                                            @elseif($vehicle->status === 'Inactive')
-                                                <span class="badge badge-status badge-inactive">{{ $vehicle->status }}</span>
-                                            @else
-                                                <span class="badge badge-status" style="background-color: #fff3cd; color: #856404;">{{ $vehicle->status }}</span>
-                                            @endif
+                                            <span class="badge {{ $vehicle->visit_status === 'IN' ? 'bg-success' : 'bg-danger' }}">
+                                                {{ $vehicle->visit_status ?? 'OUT' }}
+                                            </span>
                                         </td>
                                         <td>
                                             <a href="{{ route('vehicles.show', $vehicle) }}" class="btn btn-sm btn-info btn-action" title="View">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            <a href="{{ route('vehicles.edit', $vehicle) }}" class="btn btn-sm btn-warning btn-action" title="Edit">
+                                            @if (($vehicle->visit_status ?? 'OUT') === 'IN')
+                                                <form action="{{ route('vehicles.checkout', $vehicle->id) }}" method="POST" class="d-inline" title="Check Out">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-sm btn-warning btn-action">
+                                                        <i class="bi bi-sign-stop"></i>
+                                                    </button>
+                                                </form>
+                                            @endif
+                                            <a href="{{ route('vehicles.edit', $vehicle) }}" class="btn btn-sm btn-primary btn-action" title="Edit">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
                                             <form method="POST" action="{{ route('vehicles.destroy', $vehicle) }}" class="d-inline" onsubmit="return confirm('Are you sure?')">
@@ -82,7 +92,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="7" class="text-center text-muted py-4">
+                                        <td colspan="10" class="text-center text-muted py-4">
                                             No vehicles found.
                                         </td>
                                     </tr>

@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h1>Add New Contractor</h1>
+        <h1>Check In Contractor</h1>
     </x-slot>
 
     <div class="container-fluid">
@@ -10,6 +10,22 @@
                     <div class="card-body">
                         <form method="POST" action="{{ route('contractors.store') }}">
                             @csrf
+
+                            <h6 class="mb-3 text-primary">License Number with Auto-fill</h6>
+
+                            <div class="mb-3">
+                                <label for="license_number" class="form-label">License Number <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control @error('license_number') is-invalid @enderror" id="license_number" name="license_number" value="{{ old('license_number') }}" placeholder="Enter license number" required>
+                                    <button class="btn btn-outline-secondary" type="button" id="autofill-btn">
+                                        <i class="bi bi-arrow-repeat"></i> Auto-fill
+                                    </button>
+                                </div>
+                                @error('license_number')
+                                    <div class="invalid-feedback" style="display: block;">{{ $message }}</div>
+                                @enderror
+                                <small class="text-muted">Enter an existing license number to auto-fill contractor details</small>
+                            </div>
 
                             <div class="mb-3">
                                 <label for="company_name" class="form-label">Company Name <span class="text-danger">*</span></label>
@@ -45,22 +61,12 @@
                                 @enderror
                             </div>
 
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="license_number" class="form-label">License Number <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control @error('license_number') is-invalid @enderror" id="license_number" name="license_number" value="{{ old('license_number') }}" required>
-                                    @error('license_number')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="col-md-6 mb-3">
-                                    <label for="license_expiry" class="form-label">License Expiry <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control @error('license_expiry') is-invalid @enderror" id="license_expiry" name="license_expiry" value="{{ old('license_expiry') }}" required>
-                                    @error('license_expiry')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                            <div class="mb-3">
+                                <label for="license_expiry" class="form-label">License Expiry <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control @error('license_expiry') is-invalid @enderror" id="license_expiry" name="license_expiry" value="{{ old('license_expiry') }}" required>
+                                @error('license_expiry')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="mb-3">
@@ -93,8 +99,8 @@
                             </div>
 
                             <div class="d-flex gap-2">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-check-circle"></i> Save Contractor
+                                <button type="submit" class="btn btn-success">
+                                    <i class="bi bi-check-circle"></i> Check In Contractor
                                 </button>
                                 <a href="{{ route('contractors.index') }}" class="btn btn-secondary">
                                     <i class="bi bi-x-circle"></i> Cancel
@@ -106,4 +112,33 @@
             </div>
         </div>
     </div>
+
+    <script>
+    document.getElementById('autofill-btn').addEventListener('click', function() {
+        const licenseNo = document.getElementById('license_number').value;
+        if (!licenseNo) {
+            alert('Please enter a license number first');
+            return;
+        }
+
+        fetch(`{{ route('api.contractor-details') }}?license_number=${encodeURIComponent(licenseNo)}`)
+            .then(response => {
+                if (!response.ok) throw new Error('Contractor not found');
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('company_name').value = data.company_name;
+                document.getElementById('contact_person').value = data.contact_person;
+                document.getElementById('email').value = data.email;
+                document.getElementById('phone').value = data.phone;
+                document.getElementById('license_expiry').value = data.license_expiry;
+                document.getElementById('services_offered').value = data.services_offered;
+                document.getElementById('status').value = data.status;
+            })
+            .catch(error => {
+                alert('Contractor not found or error occurred');
+                console.error(error);
+            });
+    });
+    </script>
 </x-app-layout>

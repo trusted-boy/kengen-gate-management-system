@@ -20,11 +20,38 @@ class Visitor extends Model
         'check_out_time',
         'status',
         'signature',
-        'department', // ADDED
+        'department',
     ];
 
     protected $casts = [
         'check_in_time' => 'datetime',
         'check_out_time' => 'datetime',
     ];
+
+    /**
+     * Get the duration of stay in minutes
+     */
+    public function getDurationAttribute()
+    {
+        if (!$this->check_out_time || $this->status === 'IN') {
+            return null;
+        }
+
+        return $this->check_out_time->diffInMinutes($this->check_in_time);
+    }
+
+    /**
+     * Get formatted duration (HH:MM)
+     */
+    public function getFormattedDurationAttribute()
+    {
+        if (!$this->duration) {
+            return null;
+        }
+
+        $hours = intdiv($this->duration, 60);
+        $minutes = $this->duration % 60;
+
+        return sprintf('%02d:%02d', $hours, $minutes);
+    }
 }

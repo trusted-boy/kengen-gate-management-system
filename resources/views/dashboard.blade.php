@@ -28,7 +28,7 @@
                 <div class="card stat-card vehicles">
                     <div class="card-body">
                         <div class="stat-card-title">Active Vehicles</div>
-                        <div class="stat-card-value">{{ $activeVehicles }}</div>
+                        <div class="stat-card-value">{{ $vehiclesInside }}</div>
                     </div>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                 <div class="card stat-card contractors">
                     <div class="card-body">
                         <div class="stat-card-title">Active Contractors</div>
-                        <div class="stat-card-value">{{ $activeContractors }}</div>
+                        <div class="stat-card-value">{{ $contractorsPresent }}</div>
                     </div>
                 </div>
             </div>
