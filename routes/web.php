@@ -46,6 +46,10 @@ Route::middleware(['auth'])->group(function () {
     
     Route::resource('equipment_movements', EquipmentMovementController::class);
 
+    // Vehicle trips (fleet management)
+    Route::resource('vehicle_trips', \App\Http\Controllers\VehicleTripController::class);
+
+
     // Admin and Supervisor only
     Route::middleware('role:Admin,Supervisor')->group(function () {
         Route::get('/reports/pdf', [DashboardController::class, 'exportPdf'])->name('reports.pdf');

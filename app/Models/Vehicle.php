@@ -21,11 +21,20 @@ class Vehicle extends Model
         'check_in_time',
         'check_out_time',
         'visit_status',
+
+        // Odometer / service reminders
+        'current_odometer_km',
+        'last_service_mileage_km',
+        'service_interval_km',
+        'last_service_date',
+        'service_remarks',
     ];
 
     protected $casts = [
         'check_in_time' => 'datetime',
         'check_out_time' => 'datetime',
+
+        'last_service_date' => 'date',
     ];
 
     /**
