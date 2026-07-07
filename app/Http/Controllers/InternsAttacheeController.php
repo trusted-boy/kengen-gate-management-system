@@ -36,7 +36,7 @@ class InternsAttacheeController extends Controller
             'institution' => 'required|string|max:255',
             'purpose' => 'required|string',
             'department' => 'required|string|max:255',
-            'signature' => 'required|string|max:255',
+
         ]);
 
         $validated['check_in_time'] = now();
@@ -67,7 +67,7 @@ class InternsAttacheeController extends Controller
             'purpose' => 'required|string',
             'department' => 'required|string|max:255',
             'status' => 'required|in:IN,OUT',
-            'signature' => 'nullable|string|max:255',
+
         ]);
 
         if ($request->filled('status') && $request->status === 'OUT' && $internsAttachee->status === 'IN') {

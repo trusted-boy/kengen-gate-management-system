@@ -43,8 +43,10 @@
                                     <th>Type</th>
                                     <th>Owner</th>
                                     <th>Recipient</th>
-                                    <th>Check Out</th>
-                                    <th>Status</th>
+                                    <th>Check-In Time</th>
+                                    <th>Check-Out Time</th>
+                                    <th>Duration</th>
+                                    <th>Current Status (IN / OUT)</th>
                                     <th style="width: 150px;">Actions</th>
                                 </tr>
                             </thead>
@@ -56,14 +58,21 @@
                                         <td>{{ $movement->equipment_type }}</td>
                                         <td>{{ $movement->owner_name }}</td>
                                         <td>{{ $movement->recipient_name }}</td>
-                                        <td>{{ $movement->check_out_time->format('M d, Y H:i') }}</td>
+                                        <td>{{ $movement->check_in_time_formatted }}</td>
                                         <td>
                                             @if($movement->status === 'Out')
-                                                <span class="badge" style="background-color: #cfe2ff; color: #084298;">Out</span>
+                                                {{ $movement->check_out_time_formatted }}
                                             @else
-                                                <span class="badge badge-status badge-active">In</span>
+                                                <span class="badge bg-success">Still Inside</span>
                                             @endif
                                         </td>
+                                        <td>{{ $movement->stay_duration_human ?? '-' }}</td>
+                                        <td>
+                                            <span class="badge {{ $movement->status === 'Out' ? 'bg-danger' : 'bg-success' }}">
+                                                {{ $movement->status === 'Out' ? 'OUT' : 'IN' }}
+                                            </span>
+                                        </td>
+
                                         <td>
                                             <a href="{{ route('equipment_movements.show', $movement) }}" class="btn btn-sm btn-info btn-action" title="View">
                                                 <i class="bi bi-eye"></i>

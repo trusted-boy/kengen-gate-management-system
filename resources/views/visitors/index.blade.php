@@ -49,8 +49,10 @@
                                     <th>Host / Dept</th>
                                     <th>Vehicle</th>
                                     <th>No. Visitors</th>
-                                    <th>Check In</th>
-                                    <th>Status</th>
+                                    <th>Check-In Time</th>
+                                    <th>Check-Out Time</th>
+                                    <th>Duration</th>
+                                    <th>Current Status (IN / OUT)</th>
                                     <th style="width: 180px;">Actions</th>
                                 </tr>
                             </thead>
@@ -66,16 +68,24 @@
                                         </td>
                                         <td><small>{{ $visitor->vehicle_registration ?: '-' }}</small></td>
                                         <td><small>{{ $visitor->number_of_visitors }}</small></td>
-                                        <td>{{ $visitor->check_in_time->format('M d, H:i') }}</td>
+                                        <td>{{ $visitor->check_in_time_formatted }}</td>
                                         <td>
                                             @if($visitor->status === 'IN')
-                                                <span class="badge bg-success">Inside</span>
+                                                <span class="badge bg-success">Still Inside</span>
                                             @else
-                                                <span class="badge bg-secondary">Outside</span>
+                                                {{ $visitor->check_out_time_formatted }}
                                             @endif
+                                        </td>
+                                        <td>{{ $visitor->stay_duration_human ?? '-' }}</td>
+                                        <td>
+                                            <span class="badge {{ $visitor->status === 'IN' ? 'bg-success' : 'bg-danger' }}">
+                                                {{ $visitor->status }}
+                                            </span>
                                         </td>
                                         <td>
                                             <a href="{{ route('visitors.show', $visitor) }}" class="btn btn-sm btn-info btn-action" title="View">
+
+
                                                 <i class="bi bi-eye"></i>
                                             </a>
                                             @if($visitor->status === 'IN')

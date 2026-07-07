@@ -40,7 +40,7 @@ class VisitorController extends Controller
             'whom_to_see' => 'nullable|string|max:255',
             'department' => 'required|string|max:255',
             'purpose' => 'required|string',
-            'signature' => 'required|string|max:255',
+
         ]);
 
         $validated['check_in_time'] = now();
@@ -75,7 +75,7 @@ class VisitorController extends Controller
             'department' => 'required|string|max:255', // ADDED: Department validation
             'purpose' => 'required|string',
             'status' => 'required|in:IN,OUT',
-            'signature' => 'nullable|string|max:255',
+
         ]);
 
         if ($request->filled('status') && $request->status === 'OUT' && $visitor->status === 'IN') {

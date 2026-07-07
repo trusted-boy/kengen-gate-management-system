@@ -71,16 +71,8 @@
                                 </div>
                             </div>
 
-                            <h6 class="mb-3 mt-4">Authorization</h6>
+                            {{-- Authorization section removed (signature disabled) --}}
 
-                            <div class="mb-3">
-                                <label for="signature" class="form-label">Signature (Type your name) <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('signature') is-invalid @enderror" id="signature" name="signature" value="{{ old('signature') }}" placeholder="Enter your name as electronic signature" required>
-                                <small class="text-muted">By entering your name, you acknowledge the details above are correct.</small>
-                                @error('signature')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
 
                             <div class="d-flex gap-2">
                                 <button type="submit" class="btn btn-success">

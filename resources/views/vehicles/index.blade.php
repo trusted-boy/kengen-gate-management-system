@@ -43,10 +43,10 @@
                                     <th>Type</th>
                                     <th>Make/Model</th>
                                     <th>Owner</th>
-                                    <th>Time In</th>
-                                    <th>Time Out</th>
+                                    <th>Check-In Time</th>
+                                    <th>Check-Out Time</th>
                                     <th>Duration</th>
-                                    <th>Visit Status</th>
+                                    <th>Current Status (IN / OUT)</th>
                                     <th style="width: 180px;">Actions</th>
                                 </tr>
                             </thead>
@@ -58,14 +58,22 @@
                                         <td>{{ $vehicle->vehicle_type }}</td>
                                         <td>{{ $vehicle->make_model }} ({{ $vehicle->year }})</td>
                                         <td>{{ $vehicle->owner_name }}</td>
-                                        <td>{{ $vehicle->check_in_time ? $vehicle->check_in_time->format('Y-m-d H:i') : 'N/A' }}</td>
-                                        <td>{{ $vehicle->check_out_time ? $vehicle->check_out_time->format('Y-m-d H:i') : 'N/A' }}</td>
-                                        <td>{{ $vehicle->formatted_duration ?? '-' }}</td>
+                                        <td>{{ $vehicle->check_in_time_formatted }}</td>
+                                        <td>
+                                            @if(($vehicle->visit_status ?? 'OUT') === 'IN')
+                                                <span class="badge bg-success">Still Inside</span>
+                                            @else
+                                                {{ $vehicle->check_out_time_formatted }}
+                                            @endif
+                                        </td>
+                                        <td>{{ $vehicle->stay_duration_human ?? '-' }}</td>
                                         <td>
                                             <span class="badge {{ $vehicle->visit_status === 'IN' ? 'bg-success' : 'bg-danger' }}">
-                                                {{ $vehicle->visit_status ?? 'OUT' }}
+                                                {{ ($vehicle->visit_status ?? 'OUT') === 'IN' ? 'IN' : 'OUT' }}
                                             </span>
                                         </td>
+
+
                                         <td>
                                             <a href="{{ route('vehicles.show', $vehicle) }}" class="btn btn-sm btn-info btn-action" title="View">
                                                 <i class="bi bi-eye"></i>

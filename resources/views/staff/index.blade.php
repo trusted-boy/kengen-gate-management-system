@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container-fluid mt-4">
+
     <div class="row mb-4">
         <div class="col-md-8">
             <h1 class="h2">Staff Gate Register</h1>
@@ -55,10 +56,10 @@
                         <th>Department</th>
                         <th>Phone</th>
                         <th>Vehicle Reg.</th>
-                        <th>Time In</th>
-                        <th>Time Out</th>
+                        <th>Check-In Time</th>
+                        <th>Check-Out Time</th>
                         <th>Duration</th>
-                        <th>Status</th>
+                        <th>Current Status (IN / OUT)</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -70,15 +71,15 @@
                             <td>{{ $member->department }}</td>
                             <td>{{ $member->phone ?? 'N/A' }}</td>
                             <td>{{ $member->vehicle_registration ?? 'N/A' }}</td>
-                            <td>{{ $member->check_in_time->format('Y-m-d H:i') }}</td>
-                            <td>{{ $member->check_out_time ? $member->check_out_time->format('Y-m-d H:i') : 'N/A' }}</td>
+                            <td>{{ $member->check_in_time_formatted }}</td>
                             <td>
-                                @if ($member->formatted_duration)
-                                    {{ $member->formatted_duration }}
+                                @if ($member->status === 'IN')
+                                    <span class="badge bg-success">Still Inside</span>
                                 @else
-                                    -
+                                    {{ $member->check_out_time_formatted }}
                                 @endif
                             </td>
+                            <td>{{ $member->stay_duration_human ?? '-' }}</td>
                             <td>
                                 <span class="badge {{ $member->status === 'IN' ? 'bg-success' : 'bg-danger' }}">
                                     {{ $member->status }}

@@ -268,6 +268,9 @@
                 @endif
 
                 @yield('content')
+
+                {{-- Support for <x-app-layout> component slot (fixes UI regression for module pages) --}}
+                {{ $slot ?? '' }}
             </div>
         </div>
 

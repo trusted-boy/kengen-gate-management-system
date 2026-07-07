@@ -48,8 +48,10 @@
                                     <th>ID Number</th>
                                     <th>Institution</th>
                                     <th>Department</th>
-                                    <th>Check In</th>
-                                    <th>Status</th>
+                                    <th>Check-In Time</th>
+                                    <th>Check-Out Time</th>
+                                    <th>Duration</th>
+                                    <th>Current Status (IN / OUT)</th>
                                     <th style="width: 180px;">Actions</th>
                                 </tr>
                             </thead>
@@ -61,16 +63,23 @@
                                         <td><small>{{ $intern->id_number }}</small></td>
                                         <td><small>{{ $intern->institution }}</small></td>
                                         <td><small>{{ $intern->department }}</small></td>
-                                        <td>{{ $intern->check_in_time->format('M d, H:i') }}</td>
+                                        <td>{{ $intern->check_in_time_formatted }}</td>
                                         <td>
                                             @if($intern->status === 'IN')
-                                                <span class="badge bg-success">Present</span>
+                                                <span class="badge bg-success">Still Inside</span>
                                             @else
-                                                <span class="badge bg-secondary">Checked Out</span>
+                                                {{ $intern->check_out_time_formatted }}
                                             @endif
+                                        </td>
+                                        <td>{{ $intern->stay_duration_human ?? '-' }}</td>
+                                        <td>
+                                            <span class="badge {{ $intern->status === 'IN' ? 'bg-success' : 'bg-danger' }}">
+                                                {{ $intern->status }}
+                                            </span>
                                         </td>
                                         <td>
                                             <a href="{{ route('interns_attachees.show', $intern) }}" class="btn btn-sm btn-info btn-action" title="View">
+
                                                 <i class="bi bi-eye"></i>
                                             </a>
                                             @if($intern->status === 'IN')

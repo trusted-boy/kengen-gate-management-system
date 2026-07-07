@@ -118,10 +118,7 @@
                         <h6 class="mb-0">Additional Info</h6>
                     </div>
                     <div class="card-body">
-                        <div class="mb-3">
-                            <h6 class="text-muted">Signature</h6>
-                            <p><strong>{{ $visitor->signature }}</strong></p>
-                        </div>
+
                         <div class="mb-3">
                             <h6 class="text-muted">Checked In</h6>
                             <p>{{ $visitor->created_at->format('M d, Y H:i') }}</p>

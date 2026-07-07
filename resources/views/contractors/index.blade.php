@@ -42,10 +42,10 @@
                                     <th>Company Name</th>
                                     <th>Contact Person</th>
                                     <th>Phone</th>
-                                    <th>Time In</th>
-                                    <th>Time Out</th>
+                                    <th>Check-In Time</th>
+                                    <th>Check-Out Time</th>
                                     <th>Duration</th>
-                                    <th>Visit Status</th>
+                                    <th>Current Status (IN / OUT)</th>
                                     <th style="width: 200px;">Actions</th>
                                 </tr>
                             </thead>
@@ -56,14 +56,21 @@
                                         <td><strong>{{ $contractor->company_name }}</strong></td>
                                         <td>{{ $contractor->contact_person }}</td>
                                         <td>{{ $contractor->phone }}</td>
-                                        <td>{{ $contractor->check_in_time ? $contractor->check_in_time->format('Y-m-d H:i') : 'N/A' }}</td>
-                                        <td>{{ $contractor->check_out_time ? $contractor->check_out_time->format('Y-m-d H:i') : 'N/A' }}</td>
-                                        <td>{{ $contractor->formatted_duration ?? '-' }}</td>
+                                        <td>{{ $contractor->check_in_time_formatted }}</td>
+                                        <td>
+                                            @if(($contractor->visit_status ?? 'OUT') === 'IN')
+                                                <span class="badge bg-success">Still Inside</span>
+                                            @else
+                                                {{ $contractor->check_out_time_formatted }}
+                                            @endif
+                                        </td>
+                                        <td>{{ $contractor->stay_duration_human ?? '-' }}</td>
                                         <td>
                                             <span class="badge {{ ($contractor->visit_status ?? 'OUT') === 'IN' ? 'bg-success' : 'bg-danger' }}">
-                                                {{ $contractor->visit_status ?? 'OUT' }}
+                                                {{ ($contractor->visit_status ?? 'OUT') === 'IN' ? 'IN' : 'OUT' }}
                                             </span>
                                         </td>
+
                                         <td>
                                             <a href="{{ route('contractors.show', $contractor) }}" class="btn btn-sm btn-info btn-action" title="View">
                                                 <i class="bi bi-eye"></i>

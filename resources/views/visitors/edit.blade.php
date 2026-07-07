@@ -107,15 +107,8 @@
                                 @enderror
                             </div>
 
-                            <h6 class="mb-3 mt-4">Authorization</h6>
+                            {{-- Authorization section removed (signature disabled) --}}
 
-                            <div class="mb-3">
-                                <label for="signature" class="form-label">Signature</label>
-                                <input type="text" class="form-control @error('signature') is-invalid @enderror" id="signature" name="signature" value="{{ old('signature', $visitor->signature) }}">
-                                @error('signature')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
 
                             <div class="d-flex gap-2">
                                 <button type="submit" class="btn btn-primary">
