@@ -67,16 +67,25 @@ class EquipmentMovement extends Model
 
         if ($days > 0) {
             $hrsPart = $hours > 0 ? " {$hours} hrs" : '';
-            return "{$days} day{$days > 1 ? 's' : ''}{$hrsPart}";
+            $dayLabel = $days > 1 ? 'days' : 'day';
+
+return $days . ' ' . $dayLabel . $hrsPart;
         }
 
         if ($hours > 0) {
-            return $mins > 0
-                ? "{$hours} hr{$hours > 1 ? 's' : ''} {$mins} min{$mins > 1 ? 's' : ''}"
-                : "{$hours} hr{$hours > 1 ? 's' : ''}";
+            $hourLabel = $hours > 1 ? 'hrs' : 'hr';
+$minLabel = $mins > 1 ? 'mins' : 'min';
+
+if ($mins > 0) {
+    return $hours . ' ' . $hourLabel . ' ' . $mins . ' ' . $minLabel;
+}
+
+return $hours . ' ' . $hourLabel;
         }
 
-        return "{$minsTotal} min{$minsTotal > 1 ? 's' : ''}";
+        $minLabel = $minsTotal > 1 ? 'mins' : 'min';
+
+return $minsTotal . ' ' . $minLabel;
     }
 }
 
