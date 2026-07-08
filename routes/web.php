@@ -38,6 +38,9 @@ Route::middleware(['auth'])->group(function () {
     
     Route::resource('vehicles', VehicleController::class);
     Route::post('vehicles/{vehicle}/checkout', [VehicleController::class, 'checkout'])->name('vehicles.checkout');
+
+    Route::resource('drivers', \App\Http\Controllers\DriverController::class);
+
     Route::get('api/vehicle-details', [VehicleController::class, 'getVehicleDetails'])->name('api.vehicle-details');
     
     Route::resource('contractors', ContractorController::class);

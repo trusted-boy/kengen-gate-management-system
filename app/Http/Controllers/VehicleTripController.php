@@ -55,10 +55,12 @@ class VehicleTripController extends Controller
             'return_gate' => 'required|string|max:100',
             'destination' => 'required|string|max:255',
             'purpose_of_trip' => 'required|string|max:255',
+
             'departure_at' => 'required|date',
+
             'expected_return_at' => 'required|date|after_or_equal:departure_at',
             'departure_odometer_km' => 'required|integer|min:0',
-            'return_odometer_km' => 'nullable|integer|min:0',
+            'return_odometer_km' => 'required_if:status,Completed|nullable|integer|min:0',
             'remarks' => 'nullable|string|max:1000',
             'status' => 'required|in:Active,Completed,Overdue',
 
@@ -130,7 +132,7 @@ class VehicleTripController extends Controller
             'actual_return_at' => 'nullable|date',
 
             'departure_odometer_km' => 'required|integer|min:0',
-            'return_odometer_km' => 'nullable|integer|min:0',
+            'return_odometer_km' => 'required_if:status,Completed|nullable|integer|min:0',
             'status' => 'required|in:Active,Completed,Overdue',
 
             'remarks' => 'nullable|string|max:1000',

@@ -103,5 +103,18 @@ class Vehicle extends Model
 
         return $this->check_out_time->format('d/m/Y h:i A');
     }
+
+    public function trips()
+    {
+        return $this->hasMany(VehicleTrip::class, 'vehicle_id');
+    }
+
+    public function drivers()
+    {
+        return $this->belongsToMany(\App\Models\Driver::class, 'driver_vehicles', 'vehicle_id', 'driver_id')
+            ->withTimestamps();
+    }
 }
+
+
 

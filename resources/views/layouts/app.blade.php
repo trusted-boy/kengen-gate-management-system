@@ -17,28 +17,45 @@
                 --sidebar-width: 260px;
             }
 
+            html, body {
+                height: 100%;
+            }
+
+            /* Prevent horizontal scrollbar caused by fixed sidebar + margin/padding conflicts */
             body {
-                display: flex;
+                margin: 0;
+                overflow-x: hidden;
+                background: #f8f9fa;
+            }
+
+            /* Ensure children don’t create horizontal overflow */
+            * {
+                box-sizing: border-box;
             }
 
             .sidebar {
                 width: var(--sidebar-width);
                 background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                 color: white;
-                min-height: 100vh;
+                height: 100vh;
                 position: fixed;
                 left: 0;
                 top: 0;
-                overflow-y: auto;
+                display: flex;
+                flex-direction: column;
                 padding: 20px 0;
+                overflow: hidden; /* scrolling handled by .sidebar-nav */
             }
 
+            /* Shift content to start AFTER the fixed sidebar */
             .main-content {
-                flex: 1;
                 margin-left: var(--sidebar-width);
+                padding-left: 0;
                 display: flex;
                 flex-direction: column;
                 min-height: 100vh;
+                width: 100%;
+                box-sizing: border-box;
             }
 
             .sidebar .brand {
@@ -63,6 +80,8 @@
                 list-style: none;
                 padding: 0;
                 margin: 0;
+                flex: 1;
+                overflow-y: auto;
             }
 
             .sidebar-nav-item {
@@ -185,6 +204,8 @@
 
                 .main-content {
                     margin-left: 0;
+                    padding-left: 0;
+                    width: 100%;
                 }
 
                 .sidebar-toggle {
@@ -279,14 +300,17 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                const sidebarToggle = document.querySelector('.sidebar-toggle');
                 const sidebar = document.querySelector('.sidebar');
+                const sidebarToggles = document.querySelectorAll('.sidebar-toggle');
 
-                if (sidebarToggle) {
-                    sidebarToggle.addEventListener('click', function() {
+                if (!sidebar || sidebarToggles.length === 0) return;
+
+                // Toggle sidebar when ANY toggle button is clicked
+                sidebarToggles.forEach(function(toggle) {
+                    toggle.addEventListener('click', function(event) {
                         sidebar.classList.toggle('show');
                     });
-                }
+                });
 
                 // Close sidebar when clicking outside
                 document.addEventListener('click', function(event) {

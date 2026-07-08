@@ -25,5 +25,12 @@ class Driver extends Model
     {
         return $this->hasMany(VehicleTrip::class, 'driver_id');
     }
+
+    public function vehicles()
+    {
+        return $this->belongsToMany(Vehicle::class, 'driver_vehicles', 'driver_id', 'vehicle_id')
+            ->withTimestamps();
+    }
+
 }
 
