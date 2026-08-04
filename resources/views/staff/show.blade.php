@@ -1,103 +1,117 @@
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1>{{ $staff->full_name }}</h1>
+            <div>
+                <a href="{{ route('staff.edit', $staff) }}" class="btn btn-warning">
+                    <i class="bi bi-pencil"></i> Edit
+                </a>
+                <a href="{{ route('staff.index') }}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Back
+                </a>
+            </div>
+        </div>
+    </x-slot>
 
-@section('content')
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Staff Details</h5>
-                        <div>
-                            <a href="{{ route('staff.edit', $staff->id) }}" class="btn btn-sm btn-warning">
-                                <i class="fas fa-edit"></i> Edit
-                            </a>
-                            <a href="{{ route('staff.index') }}" class="btn btn-sm btn-secondary">
-                                <i class="fas fa-arrow-left"></i> Back
-                            </a>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0">Personal Information</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <h6 class="text-muted">Staff ID</h6>
+                                <p class="fs-5">{{ $staff->staff_id }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-muted">Department</h6>
+                                <p class="fs-5">{{ $staff->department }}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <h6 class="text-muted">Phone</h6>
+                                <p class="fs-5">{{ $staff->phone ?? 'N/A' }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-muted">Vehicle Registration</h6>
+                                <p class="fs-5">{{ $staff->vehicle_registration ?? 'N/A' }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <h6 class="text-muted">Staff ID</h6>
-                            <p>{{ $staff->staff_id }}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="text-muted">Full Name</h6>
-                            <p>{{ $staff->full_name }}</p>
-                        </div>
-                    </div>
 
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <h6 class="text-muted">Department</h6>
-                            <p>{{ $staff->department }}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="text-muted">Phone</h6>
-                            <p>{{ $staff->phone ?? 'N/A' }}</p>
-                        </div>
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0">Access Log</h6>
                     </div>
-
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <h6 class="text-muted">Vehicle Registration</h6>
-                            <p>{{ $staff->vehicle_registration ?? 'N/A' }}</p>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <h6 class="text-muted">Check In Time</h6>
+                                <p class="fs-5">{{ $staff->check_in_time->format('M d, Y H:i') }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-muted">Check Out Time</h6>
+                                <p class="fs-5">{{ $staff->check_out_time ? $staff->check_out_time->format('M d, Y H:i') : 'Not yet checked out' }}</p>
+                            </div>
                         </div>
-                        <div class="col-md-6">
+
+                        <div class="mb-3">
                             <h6 class="text-muted">Status</h6>
-                            <p>
-                                <span class="badge {{ $staff->status === 'IN' ? 'bg-success' : 'bg-danger' }}">
-                                    {{ $staff->status }}
-                                </span>
+                            <p class="fs-5">
+                                @if($staff->status === 'IN')
+                                    <span class="badge bg-success">Inside</span>
+                                @else
+                                    <span class="badge bg-secondary">Outside</span>
+                                @endif
                             </p>
                         </div>
-                    </div>
 
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <h6 class="text-muted">Time In</h6>
-                            <p>{{ $staff->check_in_time->format('Y-m-d H:i:s') }}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="text-muted">Time Out</h6>
-                            <p>{{ $staff->check_out_time ? $staff->check_out_time->format('Y-m-d H:i:s') : 'Not checked out' }}</p>
-                        </div>
-                    </div>
-
-                    @if ($staff->formatted_duration)
-                        <div class="row mb-3">
-                            <div class="col-md-12">
+                        @if($staff->formatted_duration)
+                            <div class="mb-3">
                                 <h6 class="text-muted">Duration of Stay</h6>
-                                <p><strong>{{ $staff->formatted_duration }}</strong></p>
+                                <p class="fs-5"><strong>{{ $staff->formatted_duration }}</strong></p>
                             </div>
-                        </div>
-                    @endif
+                        @endif
+                    </div>
+                </div>
 
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <h6 class="text-muted">Created At</h6>
-                            <p>{{ $staff->created_at->format('Y-m-d H:i:s') }}</p>
+                @if ($staff->status === 'IN')
+                    <div class="card">
+                        <div class="card-body">
+                            <form action="{{ route('staff.checkout', $staff) }}" method="POST" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-warning" onclick="return confirm('Check out this staff member?')">
+                                    <i class="bi bi-sign-stop"></i> Check Out
+                                </button>
+                            </form>
                         </div>
                     </div>
+                @endif
+            </div>
 
-                    @if ($staff->status === 'IN')
-                        <div class="row">
-                            <div class="col-md-12">
-                                <form action="{{ route('staff.checkout', $staff->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    <button type="submit" class="btn btn-warning">
-                                        <i class="fas fa-sign-out-alt"></i> Check Out
-                                    </button>
-                                </form>
-                            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0">Additional Info</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <h6 class="text-muted">Created</h6>
+                            <p>{{ $staff->created_at->format('M d, Y H:i') }}</p>
                         </div>
-                    @endif
+                        <div class="mb-3">
+                            <h6 class="text-muted">Last Updated</h6>
+                            <p>{{ $staff->updated_at->format('M d, Y H:i') }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-@endsection
+</x-app-layout>

@@ -153,6 +153,14 @@
                 border-left-color: #43e97b;
             }
 
+            .stat-card.interns {
+                border-left-color: #ff6b6b;
+            }
+
+            .stat-card.staff {
+                border-left-color: #20c997;
+            }
+
             .stat-card-title {
                 color: #6c757d;
                 font-size: 0.875rem;
@@ -267,7 +275,7 @@
                     </div>
                 @endif
 
-                @yield('content')
+                {{ $slot }}
             </div>
         </div>
 
